@@ -10,14 +10,14 @@
 
 package src;
 
+
 import utils.Data;
 
 public class Main {
 
     public static void main(String[] args) {
-
-
-
+        Data dt = new Data(args);
+        System.out.print("BOSTA");
     }
 
 }
