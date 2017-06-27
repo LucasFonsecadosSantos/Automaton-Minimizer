@@ -91,6 +91,7 @@ public class Data {
                     control = !control;
                 }
                 if(control) {
+                    tmpString = tmpString.trim();
                     descriptionArray.add(tmpString);
                 }
             }

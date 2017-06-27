@@ -24,8 +24,8 @@ public class Main {
 
     private static List<String> data;
     private static List<String> statesConjunction;
-    private List<String> finalStatesConjunction;
-    private List<String> transitionsConjunction;
+    private static List<String> finalStatesConjunction;
+    private static List<String> transitionsConjunction;
     
     public static void main(String[] args) {
         Data dt = new Data(args[0]);
@@ -38,7 +38,10 @@ public class Main {
         statesConjunction = tk.returnStates();
 
         String alphabet = tk.returnAlphabet();
-        System.out.println(alphabet);
+        transitionsConjunction = tk.returnTransitions();
+        String initialState = tk.returnInitialState();
+        finalStatesConjunction = tk.returnFinalStates();
+        System.out.println(finalStatesConjunction);
         //finalStatesConjunction = tk.returnFinalStates();
         //transitionsConjunctions = tk.returnTransitions();*/
 

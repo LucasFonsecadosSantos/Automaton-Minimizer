@@ -23,6 +23,8 @@ import java.util.ArrayList;
  * formatted, ready to be processed.
  */
 public class Tokenizer {
+
+    private List transitions;
     
     /**
      * Java list string data structure attribute.
@@ -44,6 +46,7 @@ public class Tokenizer {
     public Tokenizer(List content) {
         this.contentData = content;
         finalStates = new ArrayList<String>();
+        transitions = new ArrayList<String>();
     }
 
     /**
@@ -100,5 +103,65 @@ public class Tokenizer {
         line = line.replace(";", "");
         return line;
     }
+
+    /**
+     * This method is reponsible for return the transitions conjunction
+     * by Automaton of data load file content.
+     * 
+     * @return List Java string list data structure with all automaton transitions.
+     */
+    public List returnTransitions() {
+        boolean control_1 = false;
+        for(String s : this.contentData) {
+            if(s.equals("{") && (control_1 == false)) {
+                control_1 = !control_1;
+                continue;
+            }
+            if(s.contains("(") && control_1) {
+                s = s.replace(" ", "");
+                s = s.replace("),", ")");
+                transitions.add(s);
+                continue;
+            }else {
+                control_1 = !control_1;
+            }
+        }
+        return transitions;
+    }
+
+    public String returnInitialState() {
+        String initialState = "";
+        boolean control = false;
+        for(String s : this.contentData) {
+            s = s.replace(" ","");
+            if(s.equals("},") && (control == false)) {
+                control = !control;
+                continue;
+            }
+            if((s != null) && control) {
+                control = !control;
+                s = s.replace(" ", "");
+                s = s.replace(",", "");
+                initialState = s;
+            }else {
+                continue;
+            }
+        }
+        return initialState;
+    }
+
+    /*/
+    public List returnFinalStates() {
+        String finalStatesString = contentData.get(this.contentData.size()-2);
+        finalStatesString = finalStatesString.replace(" ","");
+        finalStatesString = finalStatesString.replace(",","");
+        finalStatesString = finalStatesString.replace(";","");
+        finalStatesString = finalStatesString.replace("}","");
+        finalStatesString = finalStatesString.replace("{","");
+        String[] tokenzinhos = finalStatesString.split(",");
+        finalStates.addAll(Arrays.asList(tokenzinhos));
+        finalStates.remove(finalStates.size()-1);
+        return finalStates;
+    }*/
 
 }
