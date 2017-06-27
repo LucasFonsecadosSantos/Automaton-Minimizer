@@ -25,9 +25,24 @@ import java.io.BufferedWriter;
  */
 public class Data {
 
+    /**
+     * Java list string data structure attribute.
+     */
     private ArrayList<String> descriptionArray;
+
+    /**
+     * Java BufferedReader object attribute.
+     */
     private BufferedReader inFile;
+
+    /**
+     * Java BuffereWriter object attribute.
+     */
     private BufferedWriter outFile_1;
+    
+    /**
+     * Java BufferedWriter object attribute.
+     */
     private BufferedWriter outFile_2;
 
     /**
@@ -49,6 +64,14 @@ public class Data {
 
         }
     }
+    public Data(String descriptionFile) {
+        descriptionArray = new ArrayList<String>();
+        try {
+            inFile = new BufferedReader(new FileReader(descriptionFile));
+        }catch(IOException ioex) {
+
+        }
+    }
 
     /**
      * This method is reponsible to get the automaton description information
@@ -64,7 +87,7 @@ public class Data {
 
         try {
             while((tmpString = inFile.readLine()) != null) {
-                if(tmpString == "(") {
+                if(tmpString.equals("(")) {
                     control = !control;
                 }
                 if(control) {

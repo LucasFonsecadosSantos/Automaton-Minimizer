@@ -1,8 +1,7 @@
 /**
-<<<<<<< HEAD
  * AUTOMATON-MINIMIZER 1.0 June 26, 2017
  * Formal Languages and Atomatons pratical project 2017.
- * GCCXXX - DCC - Federal University of Lavras.
+ * GCC122 - DCC - Federal University of Lavras.
  * 
  * This file the Main implementation class.
  * 
@@ -10,7 +9,9 @@
  * @author Leonardo Carvalho de Oliveira (201420432)
  * @author Tulio de Oliveira Taveira     (201621232)
  */
+import utils.Tokenizer;
 import utils.Data;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -21,26 +22,25 @@ import java.util.ArrayList;
  */
 public class Main {
 
-    private static ArrayList<String> data;
-    private ArrayList<String> statesConjunction;
-    private ArrayList<String> finalStatesConjunction;
-    private ArrayList<String> transitionsConjunction;
+    private static List<String> data;
+    private static List<String> statesConjunction;
+    private List<String> finalStatesConjunction;
+    private List<String> transitionsConjunction;
     
     public static void main(String[] args) {
-        Data dt = new Data(args[0], args[1], args[2]);
+        Data dt = new Data(args[0]);
         
         data = new ArrayList<String>();
         data = dt.returnDescription();
 
-        for(String s : data) {
-            System.out.print(s);
-        }
-
-        /*Tokenizer tk = new Tokenizer();
+        Tokenizer tk = new Tokenizer(data);
 
         statesConjunction = tk.returnStates();
-        finalStatesConjunction = tk.returnFinalStates();
-        transitionsConjunctions = tk.returnTransitions();*/
+
+        String alphabet = tk.returnAlphabet();
+        System.out.println(alphabet);
+        //finalStatesConjunction = tk.returnFinalStates();
+        //transitionsConjunctions = tk.returnTransitions();*/
 
     }
 }
