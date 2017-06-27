@@ -76,6 +76,4 @@ public class Data {
         }
         return descriptionArray;
     }
-
-
 }

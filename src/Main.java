@@ -1,4 +1,5 @@
 /**
+<<<<<<< HEAD
  * AUTOMATON-MINIMIZER 1.0 June 26, 2017
  * Formal Languages and Atomatons pratical project 2017.
  * GCCXXX - DCC - Federal University of Lavras.
@@ -42,5 +43,4 @@ public class Main {
         transitionsConjunctions = tk.returnTransitions();*/
 
     }
-
 }
