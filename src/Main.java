@@ -41,9 +41,7 @@ public class Main {
         transitionsConjunction = tk.returnTransitions();
         String initialState = tk.returnInitialState();
         finalStatesConjunction = tk.returnFinalStates();
-        System.out.println(finalStatesConjunction);
-        //finalStatesConjunction = tk.returnFinalStates();
-        //transitionsConjunctions = tk.returnTransitions();*/
+        
 
     }
 }

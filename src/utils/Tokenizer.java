@@ -36,6 +36,8 @@ public class Tokenizer {
      */
     private List<String> finalStates;
 
+    private List<String> states;
+
     /**
      * Tokenizer object constructor. He receives a one list
      * data structure by parameter with all data load by file
@@ -47,6 +49,7 @@ public class Tokenizer {
         this.contentData = content;
         finalStates = new ArrayList<String>();
         transitions = new ArrayList<String>();
+        states = new ArrayList<String>();
     }
 
     /**
@@ -72,9 +75,9 @@ public class Tokenizer {
             s = s.replace(";", "");
             s = s.replace(",", "");
             s = s.replace(" ", "");
-            finalStates.add(s);
+            states.add(s);
         }
-        return finalStates;
+        return states;
     }
 
     /**
@@ -150,18 +153,17 @@ public class Tokenizer {
         return initialState;
     }
 
-    /*/
     public List returnFinalStates() {
-        String finalStatesString = contentData.get(this.contentData.size()-2);
-        finalStatesString = finalStatesString.replace(" ","");
-        finalStatesString = finalStatesString.replace(",","");
-        finalStatesString = finalStatesString.replace(";","");
-        finalStatesString = finalStatesString.replace("}","");
-        finalStatesString = finalStatesString.replace("{","");
-        String[] tokenzinhos = finalStatesString.split(",");
-        finalStates.addAll(Arrays.asList(tokenzinhos));
-        finalStates.remove(finalStates.size()-1);
+        String statesStr;
+        statesStr = this.contentData.get(this.contentData.size()-2);
+        String[] tokenzinhos = statesStr.split(",");
+        for(String s : tokenzinhos) {
+            s = s.replace(",","");
+            s = s.replace("{", "");
+            s = s.replace("}", "");
+            finalStates.add(s);
+        }
         return finalStates;
-    }*/
+    }
 
 }
