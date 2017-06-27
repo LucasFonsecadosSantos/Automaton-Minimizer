@@ -36,6 +36,7 @@ public class Tokenizer {
      */
     private List<String> finalStates;
 
+
     private List<String> states;
 
     /**
@@ -60,7 +61,7 @@ public class Tokenizer {
      * 
      * @return List Java list data struct with all automaton states.
      */
-    public List returnStates() {
+    public List<String> returnStates() {
         String line = "";
         for(String s : this.contentData) {
             if(s.contains("{")) {
@@ -113,7 +114,7 @@ public class Tokenizer {
      * 
      * @return List Java string list data structure with all automaton transitions.
      */
-    public List returnTransitions() {
+    public List<String> returnTransitions() {
         boolean control_1 = false;
         for(String s : this.contentData) {
             if(s.equals("{") && (control_1 == false)) {
@@ -132,10 +133,14 @@ public class Tokenizer {
         return transitions;
     }
 
+    /**
+     * This method returns the initial state string by data load file content.
+     * He verifys the 
+     */
     public String returnInitialState() {
         String initialState = "";
         boolean control = false;
-        for(String s : this.contentData) {
+        for(String s : contentData) {
             s = s.replace(" ","");
             if(s.equals("},") && (control == false)) {
                 control = !control;
@@ -152,8 +157,8 @@ public class Tokenizer {
         }
         return initialState;
     }
-
-    public List returnFinalStates() {
+    
+    public List<String> returnFinalStates() {
         String statesStr;
         statesStr = this.contentData.get(this.contentData.size()-2);
         String[] tokenzinhos = statesStr.split(",");

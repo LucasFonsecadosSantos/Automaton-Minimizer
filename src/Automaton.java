@@ -20,7 +20,13 @@ public class Automaton {
     private String alphabet;
     private String initialState;
 
-    public Automaton(List<String> automatonStates, String automatonAlphabet, List<String> automatonTransitions, String automatonInitialState, List<String> automatonFinalStates) {
+    public Automaton(
+                        List<String> automatonStates,
+                        String automatonAlphabet,
+                        List<String> automatonTransitions,
+                        String automatonInitialState,
+                        List<String> automatonFinalStates
+                    ) {
         states = new ArrayList<String>();
         transitions = new ArrayList<String>();
         finalStates = new ArrayList<String>();

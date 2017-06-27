@@ -21,26 +21,15 @@ import java.util.ArrayList;
  * tokenizer and others and execute the stages of algorithm.
  */
 public class Main {
-
-    private static List<String> data;
-    private static List<String> statesConjunction;
-    private static List<String> finalStatesConjunction;
-    private static List<String> transitionsConjunction;
     
     public static void main(String[] args) {
         Data dt = new Data(args[0]);
         
-        data = new ArrayList<String>();
-        data = dt.returnDescription();
+        List<String>data = dt.returnDescription();
 
         Tokenizer tk = new Tokenizer(data);
+        Automaton m1 = new Automaton(tk.returnStates(), tk.returnAlphabet(), tk.returnTransitions(), tk.returnInitialState(), tk.returnFinalStates());
 
-        statesConjunction = tk.returnStates();
-
-        String alphabet = tk.returnAlphabet();
-        transitionsConjunction = tk.returnTransitions();
-        String initialState = tk.returnInitialState();
-        finalStatesConjunction = tk.returnFinalStates();
         
 
     }
