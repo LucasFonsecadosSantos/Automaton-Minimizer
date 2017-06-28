@@ -30,7 +30,7 @@ public class Main {
         Tokenizer tk = new Tokenizer(data);
         Automaton m1 = new Automaton(tk.returnStates(), tk.returnAlphabet(), tk.returnTransitions(), tk.returnInitialState(), tk.returnFinalStates());
 
-        
+        m1.minimize();
 
     }
 }

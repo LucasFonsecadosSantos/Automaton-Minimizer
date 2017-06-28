@@ -36,7 +36,7 @@ public class Tokenizer {
      */
     private List<String> finalStates;
 
-
+    
     private List<String> states;
 
     /**
@@ -54,7 +54,7 @@ public class Tokenizer {
     }
 
     /**
-     * This method is responsible for the string states conjunction treatment.
+     * This method is responsible for the string states set treatment.
      * He removes all characters unwanted to the automaton processing. He replaces
      * that characters on string and stores in the states list to be returned
      * by method.
@@ -109,13 +109,14 @@ public class Tokenizer {
     }
 
     /**
-     * This method is reponsible for return the transitions conjunction
+     * This method is reponsible for return the transitions set
      * by Automaton of data load file content.
      * 
      * @return List Java string list data structure with all automaton transitions.
      */
     public List<String> returnTransitions() {
         boolean control_1 = false;
+        System.out.println(contentData);
         for(String s : this.contentData) {
             if(s.equals("{") && (control_1 == false)) {
                 control_1 = !control_1;
