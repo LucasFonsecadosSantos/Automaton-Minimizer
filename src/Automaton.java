@@ -77,12 +77,20 @@ public class Automaton {
     }
 
     public void minimize() {
-        boolean[][] statesMatrix = new boolean[this.states.size()][this.states.size()];
+        //boolean[][] statesMatrix = new boolean[this.states.size()][this.states.size()];
         
-        List<Integer> positionsToCheckOnMatrix = new ArrayList<Integer>();
-        boolean control = false;
-        String[] tokens = new String[2];
+        //List<Integer> positionsToCheckOnMatrix = new ArrayList<Integer>();
+        //boolean control = false;
+        //String[] tokens = new String[2];
 
+        State[] sta = new State[7];
+        for(int i=0; i < 7; i++) {
+            sta[i] = new State("q"+String.valueOf(i), this.alphabet);
+        }
+        sta[3].setNextState("b", "q2");
+
+        System.out.println(sta[3].getNextState("b"));
+        /*
         for(int i=0; i < this.transitions.size(); i++) {
             
             for(int j=0; j < this.states.size(); j++) {
@@ -107,9 +115,9 @@ public class Automaton {
                
             }
             
-        }
+        }*/
 
-        System.out.println(positionsToCheckOnMatrix);
+        //System.out.println(positionsToCheckOnMatrix);
     }
 
 }
