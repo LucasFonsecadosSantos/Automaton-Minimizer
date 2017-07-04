@@ -116,19 +116,17 @@ public class Tokenizer {
      */
     public List<String> returnTransitions() {
         boolean control_1 = false;
-        System.out.println(contentData);
         for(String s : this.contentData) {
-            if(s.equals("{") && (control_1 == false)) {
+            if(s.equals("{") ) {
                 control_1 = !control_1;
                 continue;
-            }
-            if(s.contains("(") && control_1) {
+            }else if(s.contains("(") && control_1) {
                 s = s.replace(" ", "");
                 s = s.replace("),", ")");
                 transitions.add(s);
                 continue;
             }else {
-                control_1 = !control_1;
+                control_1 = false;
             }
         }
         return transitions;

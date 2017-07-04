@@ -79,12 +79,12 @@ public class Automaton {
     public void minimize() {
         boolean[][] statesMatrix = new boolean[this.states.size()][this.states.size()];
         
-        int count = 0;
         List<Integer> positionsToCheckOnMatrix = new ArrayList<Integer>();
         boolean control = false;
         String[] tokens = new String[2];
+
         for(int i=0; i < this.transitions.size(); i++) {
-            count = 0;
+            
             for(int j=0; j < this.states.size(); j++) {
 
                tokens = this.transitions.get(i).split(",");
@@ -106,9 +106,7 @@ public class Automaton {
                
                
             }
-            if(count == 1) {
-                //positionsToCheckOnMatrix.remove(positionsToCheckOnMatrix.get(positionsToCheckOnMatrix.size()));
-            }
+            
         }
 
         System.out.println(positionsToCheckOnMatrix);

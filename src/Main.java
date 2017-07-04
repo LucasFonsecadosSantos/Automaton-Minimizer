@@ -23,9 +23,10 @@ import java.util.ArrayList;
 public class Main {
     
     public static void main(String[] args) {
+        
         Data dt = new Data(args[0]);
         
-        List<String>data = dt.returnDescription();
+        List<String> data = dt.returnDescription();
 
         Tokenizer tk = new Tokenizer(data);
         Automaton m1 = new Automaton(tk.returnStates(), tk.returnAlphabet(), tk.returnTransitions(), tk.returnInitialState(), tk.returnFinalStates());
