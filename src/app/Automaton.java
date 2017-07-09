@@ -9,6 +9,7 @@
  * @author Leonardo Carvalho de Oliveira (201420432)
  * @author Tulio de Oliveira Taveira     (201621232)
  */
+package app;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -77,19 +78,49 @@ public class Automaton {
     }
 
     public void minimize() {
-        //boolean[][] statesMatrix = new boolean[this.states.size()][this.states.size()];
+
+        boolean[][] statesMatrix = new boolean[this.states.size()][this.states.size()];
+        List<Integer> index_i = new ArrayList<Integer>();
+        List<Integer> index_j = new ArrayList<Integer>();
+        List<Boolean> d = new ArrayList<Boolean>();
+        List<String> motivo = new ArrayList<String>();
+
+        int trueCounter = 0;
+        for(int i=0; i < this.states.size(); i++) {
+            for(int j=0; j < this.states.size(); j++) {
+                if((i == j) || (i > j)) {
+                    statesMatrix[i][j] = false;
+                }else {
+                    statesMatrix[i][j] = true;
+                    trueCounter++;
+                    index_i.add(i);
+                    index_j.add(j);
+                }
+            } 
+        }
         
+        int[][] s = new int[trueCounter-1][2];
+
+        for(int i=0; i < trueCounter; i++) {
+            if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
+                d.add(true);
+                motivo.add("");
+            }else if(!isFinalState(this.states.get(index_i.get(i))) && (!isFinalState(this.states.get(index_j.get(i))))) {
+                d.add(true);
+                motivo.add("");
+            }else {
+                d.add(false);
+                motivo.add("Final/Nao Final");
+            }
+        }
+
+        System.out.println(motivo);
+        
+
         //List<Integer> positionsToCheckOnMatrix = new ArrayList<Integer>();
         //boolean control = false;
         //String[] tokens = new String[2];
 
-        State[] sta = new State[7];
-        for(int i=0; i < 7; i++) {
-            sta[i] = new State("q"+String.valueOf(i), this.alphabet);
-        }
-        sta[3].setNextState("b", "q2");
-
-        System.out.println(sta[3].getNextState("b"));
         /*
         for(int i=0; i < this.transitions.size(); i++) {
             
@@ -118,6 +149,23 @@ public class Automaton {
         }*/
 
         //System.out.println(positionsToCheckOnMatrix);
+    }
+
+    /**
+     * This private method is responsible for verifys if
+     * the state received by parameter is a final state.
+     * It returns true if yes.
+     * 
+     * @param state State String to compare.
+     * @return boolean Result of comparable.
+     */
+    private boolean isFinalState(String state) {
+        for(String s : this.finalStates) {
+            if(s.equals(state)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

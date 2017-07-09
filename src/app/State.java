@@ -9,16 +9,30 @@
  * @author Leonardo Carvalho de Oliveira (201420432)
  * @author Tulio de Oliveira Taveira     (201621232)
  */
+package app;
 
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * This class describes the state object. He contains
+ * N possibles next states reading any alphabet elements.
+ */
 public class State {
 
+    /**
+     * Current state string attribute;
+     */
     private String currentState;
     
-    private String[] alphabetElements;
+    /**
+     * The next states about current state array attribute;
+     */
+    private String[] nextStates;
 
+    /**
+     * Alphabet elements string attribute;
+     */
     private String alphabet;
 
     /**
@@ -30,15 +44,15 @@ public class State {
      * @param alplhabet String with all alphabet elements.
      */
     public State(String currentState, String alphabet) {
-        alphabetElements = new String[alphabet.length()];
+        nextStates = new String[alphabet.length()];
         this.currentState = currentState;
         this.alphabet = alphabet;
     }
-
+    
     public void setNextState(String alphabetLetter, String nextState) {
         for(int i=0; i < alphabet.length(); i++) {
             if(alphabetLetter.equals(String.valueOf(alphabet.charAt(i)))) {
-                alphabetElements[i] = nextState;
+                nextStates[i] = nextState;
             }
         }
     }
@@ -46,7 +60,7 @@ public class State {
     public String getNextState(String alphabetLetter) {
         for(int i=0; i < alphabet.length(); i++) {
             if(alphabetLetter.equals(String.valueOf(alphabet.charAt(i)))) {
-                return alphabetElements[i];
+                return nextStates[i];
             }
         }
         return null;
