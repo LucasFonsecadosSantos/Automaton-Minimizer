@@ -49,6 +49,9 @@ public class State {
         this.alphabet = alphabet;
     }
     
+    /**
+     * This method is responsible for
+     */
     public void setNextState(String alphabetLetter, String nextState) {
         for(int i=0; i < alphabet.length(); i++) {
             if(alphabetLetter.equals(String.valueOf(alphabet.charAt(i)))) {
@@ -57,6 +60,9 @@ public class State {
         }
     }
 
+    public String getCurrentState() {
+        return this.currentState;
+    }
     public String getNextState(String alphabetLetter) {
         for(int i=0; i < alphabet.length(); i++) {
             if(alphabetLetter.equals(String.valueOf(alphabet.charAt(i)))) {

@@ -77,6 +77,9 @@ public class Automaton {
         this.initialState = automatonInitialState;
     }
 
+    /**
+     * 
+     */
     public void minimize() {
 
         boolean[][] statesMatrix = new boolean[this.states.size()][this.states.size()];
@@ -99,7 +102,7 @@ public class Automaton {
             } 
         }
         
-        int[][] s = new int[trueCounter-1][2];
+        int[][] s = new int[trueCounter][2];
 
         for(int i=0; i < trueCounter; i++) {
             if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
@@ -114,42 +117,79 @@ public class Automaton {
             }
         }
 
-        System.out.println(motivo);
+        String[][] tokens = transitionPharser();
+        String str1 = "";
+        String str2 = "";
         
-
-        //List<Integer> positionsToCheckOnMatrix = new ArrayList<Integer>();
-        //boolean control = false;
-        //String[] tokens = new String[2];
-
-        /*
-        for(int i=0; i < this.transitions.size(); i++) {
-            
-            for(int j=0; j < this.states.size(); j++) {
-
-               tokens = this.transitions.get(i).split(",");
-               
-               if(tokens[0].contains(this.states.get(j))) {
-                   positionsToCheckOnMatrix.add(j);
-                   System.out.println("PRIMEIRA: "+j + this.states.get(j));
-               }
-               if(tokens[1].contains(this.states.get(j))) {
-                   if(tokens[0] != tokens[1]) {
-                        positionsToCheckOnMatrix.add(j);
-                        System.out.println("SEGUNDA: "+j + this.states.get(j));
-                   }else {
-                       positionsToCheckOnMatrix.remove(positionsToCheckOnMatrix.size()-1);
-                       continue;
-                   }
-               }
-               
-               
-               
+        for(int i=0; i < trueCounter; i++) {
+            for(int j=0; j < this.alphabet.length(); j++) {
+                
+                str1 = returnNextState(this.states.get(index_i.get(i)), String.valueOf(this.alphabet.charAt(j)));
+                str2 = returnNextState(this.states.get(index_j.get(i)), String.valueOf(this.alphabet.charAt(j)));
+        
+                if(isFinalState(str1) && isFinalState(str2)) {
+                    for(int k=0; k < trueCounter; k++) {
+                        if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) {
+                            s[k][0] = index_i.get(i);
+                            s[k][1] = index_j.get(i);
+                            break;
+                        }
+                    }
+                }else if(!isFinalState(str1) && !isFinalState(str2)) {
+                    for(int k=0; k < trueCounter; k++) {
+                        if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) {
+                            s[k][0] = index_i.get(i);
+                            s[k][1] = index_j.get(i);
+                            break;
+                        }
+                    }
+                }
             }
-            
-        }*/
+        }
 
-        //System.out.println(positionsToCheckOnMatrix);
+        for(int i=0; i < trueCounter; i++) {
+            for(int k=0; k < 2; k++) {
+                System.out.println(s[i][k]);
+            }
+        }
+        
     }
+
+    private String returnNextState(String currentState, String alphabetLetter) {
+        String[][] tokens = transitionPharser();
+        for(int i=0; i < this.transitions.size(); i++) {
+            if(tokens[i][0].equals(currentState)) {
+                if(tokens[i][1].equals(alphabetLetter)) {
+                    return tokens[i][2];
+                }
+            }else {
+                continue;
+            }
+        }
+        return null;
+    }
+
+    private String[][] transitionPharser() {
+        String[][] tokens = new String[this.transitions.size()][3];
+        String[] aux_1 = new String[2];
+        String[] aux_2 = new String[2];
+        
+        for(int k = 0; k < this.transitions.size(); k ++){
+            for(int i=0; i < this.transitions.size(); i++) {
+                aux_1 = this.transitions.get(i).split(",");
+                aux_1[0] = aux_1[0].replace("(", "");
+                aux_1[0] = aux_1[0].trim();
+                aux_2 = aux_1[1].split("->");
+                aux_2[0] = aux_2[0].trim();
+                aux_2[1] = aux_2[1].replace(")", "");
+                aux_2[1] = aux_2[1].trim();
+                    tokens[i][0] = aux_1[0];
+                    tokens[i][1] = aux_2[0];
+                    tokens[i][2] = aux_2[1]; 
+            }
+        }
+        return tokens;
+    }    
 
     /**
      * This private method is responsible for verifys if

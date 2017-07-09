@@ -14,6 +14,8 @@ package utils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedWriter;
@@ -58,7 +60,13 @@ public class Data {
         descriptionArray = new ArrayList<String>();
         try {
             inFile = new BufferedReader(new FileReader(descriptionFile));
+            //if(!new File(tableFile).exists()) {
+             //   new File("../table.txt").createNewFile();
+           // }
             outFile_1 = new BufferedWriter(new FileWriter(tableFile));
+            //if(!new File(minimizedAutomaton).exists()) {
+             //   new File("afd_minimized.txt").createNewFile();
+           // }
             outFile_2 = new BufferedWriter(new FileWriter(minimizedAutomaton));
         }catch(IOException ioex) {
 
@@ -102,4 +110,10 @@ public class Data {
         }
         return descriptionArray;
     }
+
+    /*public void printTable(List<Integer> index_i, List<Integer> index_j, List<Boolean> d, List<String> motivo) {
+        for(int i=0; i < index_i.size(); i++) {
+            
+        }
+    }*/
 }
