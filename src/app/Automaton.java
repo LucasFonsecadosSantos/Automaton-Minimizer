@@ -12,6 +12,9 @@
 package app;
 
 import java.util.List;
+
+import javax.sound.midi.Soundbank;
+
 import java.util.ArrayList;
 
 /**
@@ -102,7 +105,10 @@ public class Automaton {
             } 
         }
         
-        int[][] s = new int[trueCounter][2];
+        String[] s = new String[trueCounter];
+        for(String st : s ) {
+            st = " ";
+        }
 
         for(int i=0; i < trueCounter; i++) {
             if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
@@ -111,7 +117,7 @@ public class Automaton {
             }else if(!isFinalState(this.states.get(index_i.get(i))) && (!isFinalState(this.states.get(index_j.get(i))))) {
                 d.add(true);
                 motivo.add("");
-            }else {
+            }else if((isFinalState(this.states.get(index_i.get(i))) && !isFinalState(this.states.get(index_j.get(i)))) || (!isFinalState(this.states.get(index_i.get(i))) && isFinalState(this.states.get(index_j.get(i))))){
                 d.add(false);
                 motivo.add("Final/Nao Final");
             }
@@ -129,30 +135,58 @@ public class Automaton {
         
                 if(isFinalState(str1) && isFinalState(str2)) {
                     for(int k=0; k < trueCounter; k++) {
-                        if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) {
-                            s[k][0] = index_i.get(i);
-                            s[k][1] = index_j.get(i);
+                        if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) { //quando acha o estado certo 
+                            if(motivo.get(k).equals("")){                   // se o motivo nao existir
+                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"] "; // grava no dependencia
+                             }
+                            else{ // se nao estiver vazia, propaga ate a posicao
+                                if(motivo.get(i).equals("")){
+                                    motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
+                                    break;
+                                }
+                            }    
                             break;
                         }
                     }
                 }else if(!isFinalState(str1) && !isFinalState(str2)) {
                     for(int k=0; k < trueCounter; k++) {
                         if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) {
-                            s[k][0] = index_i.get(i);
-                            s[k][1] = index_j.get(i);
+                            if(motivo.get(k).equals("")){ // se o motivo nao existir pode colocar em dependencia
+                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"] ";
+                            }else{ // se existir, propagar
+                                if(motivo.get(i).equals("")){
+                                    motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
+                                    break;
+                                }
+                            }
                             break;
                         }
                     }
+                }if((isFinalState(str1) && !isFinalState(str2)) || (!isFinalState(str1) && isFinalState(str2))){
+                    if(motivo.get(i).equals("Final/Nao Final")){ // se for Final/ nao final, nao fazer nada
+                        break;
+                    }else{
+                        if(motivo.get(i).equals("")){
+                            motivo.add(i, String.valueOf(this.alphabet.charAt(j)) + "[" + str1 + "," + str2 + "]");
+                             break;
+                        }
+                    }
                 }
+                
             }
         }
 
         for(int i=0; i < trueCounter; i++) {
-            for(int k=0; k < 2; k++) {
-                System.out.println(s[i][k]);
-            }
+            
+                System.out.println(s[i]);
+        
         }
         
+        for(int i=0; i < trueCounter; i++) {
+            
+                System.out.println(motivo.get(i));
+        
+        }
     }
 
     private String returnNextState(String currentState, String alphabetLetter) {
