@@ -109,21 +109,28 @@ public class Automaton {
         for(String st : s ) {
             st = " ";
         }
-
+        boolean[] control = new boolean[trueCounter];
+        for(boolean b : control) {
+            b = true;
+        }
         for(int i=0; i < trueCounter; i++) {
             if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
                 d.add(true);
                 motivo.add("");
+                control[i] = false;
             }else if(!isFinalState(this.states.get(index_i.get(i))) && (!isFinalState(this.states.get(index_j.get(i))))) {
                 d.add(true);
                 motivo.add("");
+                control[i] = false;
             }else if((isFinalState(this.states.get(index_i.get(i))) && !isFinalState(this.states.get(index_j.get(i)))) || (!isFinalState(this.states.get(index_i.get(i))) && isFinalState(this.states.get(index_j.get(i))))){
                 d.add(false);
+                control[i] = true;
                 motivo.add("Final/Nao Final");
+                System.out.println(i);
             }
         }
-
         String[][] tokens = transitionPharser();
+
         String str1 = "";
         String str2 = "";
         
@@ -136,58 +143,120 @@ public class Automaton {
                 if(isFinalState(str1) && isFinalState(str2)) {
                     for(int k=0; k < trueCounter; k++) {
                         if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) { //quando acha o estado certo 
-                            if(motivo.get(k).equals("")){                   // se o motivo nao existir
-                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"] "; // grava no dependencia
+                            if(control[i] ==  true){ // se for Final/ nao final, nao fazer nada
+                                break;
+                            }
+                            else{
+                            if(control[k] == false){                   // se o motivo nao existir no k
+                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"]"; // grava no dependencia
                              }
                             else{ // se nao estiver vazia, propaga ate a posicao
-                                if(motivo.get(i).equals("")){
+                                if(control[i] == false){
                                     motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
+                                    System.out.println("propagou");
+                                    control[i] = true;
                                     break;
                                 }
                             }    
                             break;
+                            }
                         }
                     }
                 }else if(!isFinalState(str1) && !isFinalState(str2)) {
                     for(int k=0; k < trueCounter; k++) {
                         if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) {
-                            if(motivo.get(k).equals("")){ // se o motivo nao existir pode colocar em dependencia
-                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"] ";
+                            if(control[i] ==  true){ // se for Final/ nao final, nao fazer nada
+                                break;
+                            }
+                            else{ // estado que voce esta nao estiver motivo
+                            if(control[k] == false){ // se o motivo nao existir pode colocar em dependencia
+                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"]";
+
                             }else{ // se existir, propagar
-                                if(motivo.get(i).equals("")){
+                                if(control[i] == false){
                                     motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
+                                    control[i] = true;
                                     break;
                                 }
                             }
                             break;
+                            }
                         }
                     }
                 }if((isFinalState(str1) && !isFinalState(str2)) || (!isFinalState(str1) && isFinalState(str2))){
-                    if(motivo.get(i).equals("Final/Nao Final")){ // se for Final/ nao final, nao fazer nada
+                    if(control[i] == true){ // se for Final/ nao final, nao fazer nada
                         break;
-                    }else{
-                        if(motivo.get(i).equals("")){
+                    }if(control[i] == false){
                             motivo.add(i, String.valueOf(this.alphabet.charAt(j)) + "[" + str1 + "," + str2 + "]");
+                            control[i] = true;
                              break;
                         }
                     }
-                }
-                
+
+                    if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
+                            if (motivo.get(i).equals("Final/Nao Final")){
+                                motivo.add(i,"");
+                            }
+                            System.out.println("entrou aqui" + index_i.get(i) + " " + index_j.get(i));
+                            control[i] = false;
+                    }else if(!isFinalState(this.states.get(index_i.get(i))) && (!isFinalState(this.states.get(index_j.get(i))))) {
+                            if (motivo.get(i).equals("Final/Nao Final")){
+                                motivo.add(i,"");
+                            }
+                            control[i] = false;
+            }else if((isFinalState(this.states.get(index_i.get(i))) && !isFinalState(this.states.get(index_j.get(i)))) || (!isFinalState(this.states.get(index_i.get(i))) && isFinalState(this.states.get(index_j.get(i))))){
+              motivo.add(i,"Final/Nao Final");
+              control[i] = true;
+            }
             }
         }
+        // hora de propagarrrrrrrrrrrrr
 
-        for(int i=0; i < trueCounter; i++) {
+        for(int ka=trueCounter-1; ka > -1; ka--) {
+             // eh invalido
+             
+                // if (control[ka] == true){
+                    System.out.println("ka");
+                    String [] aux = dependencyPharser(s[ka]);
+                    for (int i = 0; i < aux.length; i ++){
+                        String x = aux[i]; // recebendo o token pos i, para separar e propagar
+                        int count_i = Character.getNumericValue(x.charAt(0));
+                        System.out.println(count_i + " buceta");
+                    }
+                // }else{
+                    // break;
+                // }
+                
+                
+                
             
-                System.out.println(s[i]);
-        
-        }
-        
-        for(int i=0; i < trueCounter; i++) {
+      }
+
+        // for(int i=0; i < trueCounter; i++) {
             
-                System.out.println(motivo.get(i));
-        
-        }
+        //         System.out.println("x " + index_i.get(i) + " y " + index_j.get(i) + " " +   motivo.get(i));
+        // }
     }
+
+    private String[] dependencyPharser(String s) {
+            System.out.println(s);
+                if(s!=null && !s.trim().equals("")) {
+                    if(!s.contains("[")) return null;
+                    s = s.replace("null", "");
+                    System.out.println(s + " s bosta");
+                    String[] tokens = s.split("]");
+                    for(String str : tokens) {
+                        str = str.replace("[", "");
+                        str = str.replace("]", "");
+                        str = str.replace(",", "");
+                        str = str.replace(" ", "");
+                        System.out.println(str);
+                    }
+                    return tokens;
+                }
+        return null;
+    }
+            
 
     private String returnNextState(String currentState, String alphabetLetter) {
         String[][] tokens = transitionPharser();
