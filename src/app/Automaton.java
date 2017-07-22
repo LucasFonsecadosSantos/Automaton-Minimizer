@@ -212,16 +212,20 @@ public class Automaton {
         }
         // hora de propagarrrrrrrrrrrrr
 
-        for(int ka=trueCounter-1; ka > -1; ka--) {
+        for(int ka=trueCounter-1; ka > 0; ka--) {
              // eh invalido
              
                 // if (control[ka] == true){
                     System.out.println("ka");
                     String [] aux = dependencyPharser(s[ka]);
-                    for (int i = 0; i < aux.length; i ++){
-                        String x = aux[i]; // recebendo o token pos i, para separar e propagar
-                        int count_i = Character.getNumericValue(x.charAt(0));
-                        System.out.println(count_i + " buceta");
+                    if(aux == null) {
+                        System.out.println("EPAAA TIOZAO");
+                    }else {
+                        for (int i = 0; i < aux.length; i ++){
+                            String x = aux[i]; // recebendo o token pos i, para separar e propagar
+                            int count_i = Character.getNumericValue(x.charAt(0));
+                            System.out.println(count_i + " lixo");
+                        }
                     }
                 // }else{
                     // break;
@@ -239,7 +243,8 @@ public class Automaton {
     }
 
     private String[] dependencyPharser(String s) {
-            System.out.println(s);
+            System.out.println("Pharser String: "+s);
+                if(s == null) return null;
                 if(s!=null && !s.trim().equals("")) {
                     if(!s.contains("[")) return null;
                     s = s.replace("null", "");
