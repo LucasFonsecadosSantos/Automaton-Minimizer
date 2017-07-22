@@ -109,10 +109,13 @@ public class Automaton {
         for(String st : s ) {
             st = " ";
         }
+
         boolean[] control = new boolean[trueCounter];
+        
         for(boolean b : control) {
             b = true;
         }
+        
         for(int i=0; i < trueCounter; i++) {
             if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
                 d.add(true);
@@ -129,8 +132,8 @@ public class Automaton {
                 System.out.println(i);
             }
         }
+        
         String[][] tokens = transitionPharser();
-
         String str1 = "";
         String str2 = "";
         
@@ -147,18 +150,18 @@ public class Automaton {
                                 break;
                             }
                             else{
-                            if(control[k] == false){                   // se o motivo nao existir no k
-                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"]"; // grava no dependencia
-                             }
-                            else{ // se nao estiver vazia, propaga ate a posicao
-                                if(control[i] == false){
-                                    motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
-                                    System.out.println("propagou");
-                                    control[i] = true;
-                                    break;
+                                if(control[k] == false){                   // se o motivo nao existir no k
+                                    s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"]"; // grava no dependencia
                                 }
-                            }    
-                            break;
+                                else{ // se nao estiver vazia, propaga ate a posicao
+                                    if(control[i] == false){
+                                        motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
+                                        System.out.println("propagou");
+                                        control[i] = true;
+                                        break;
+                                    }
+                                }    
+                                break;
                             }
                         }
                     }
@@ -167,81 +170,87 @@ public class Automaton {
                         if(this.states.get(index_i.get(k)).equals(str1) && this.states.get(index_j.get(k)).equals(str2)) {
                             if(control[i] ==  true){ // se for Final/ nao final, nao fazer nada
                                 break;
-                            }
-                            else{ // estado que voce esta nao estiver motivo
-                            if(control[k] == false){ // se o motivo nao existir pode colocar em dependencia
-                                s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"]";
-
-                            }else{ // se existir, propagar
-                                if(control[i] == false){
-                                    motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
-                                    control[i] = true;
-                                    break;
+                            }else{ // estado que voce esta nao estiver motivo
+                                if(control[k] == false){ // se o motivo nao existir pode colocar em dependencia
+                                    s[k]  += "["+index_i.get(i)+" , "+index_j.get(i)+"]";
+                                }else{ // se existir, propagar
+                                    if(control[i] == false){
+                                        motivo.add(i,"prop" + String.valueOf(str1) + "," + String.valueOf(str2));
+                                        control[i] = true;
+                                        break;
+                                    }
                                 }
-                            }
-                            break;
+                                break;
                             }
                         }
                     }
-                }if((isFinalState(str1) && !isFinalState(str2)) || (!isFinalState(str1) && isFinalState(str2))){
-                    if(control[i] == true){ // se for Final/ nao final, nao fazer nada
+                }if((isFinalState(str1) && !isFinalState(str2)) || (!isFinalState(str1) && isFinalState(str2))) {
+                    if(control[i] == true) { // se for Final/ nao final, nao fazer nada
                         break;
-                    }if(control[i] == false){
-                            motivo.add(i, String.valueOf(this.alphabet.charAt(j)) + "[" + str1 + "," + str2 + "]");
-                            control[i] = true;
-                             break;
-                        }
                     }
+                    if(control[i] == false) {
+                        motivo.add(i, String.valueOf(this.alphabet.charAt(j)) + "[" + str1 + "," + str2 + "]");
+                        control[i] = true;
+                        break;
+                    }
+                }
 
-                    if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
-                            if (motivo.get(i).equals("Final/Nao Final")){
-                                motivo.add(i,"");
-                            }
-                            System.out.println("entrou aqui" + index_i.get(i) + " " + index_j.get(i));
-                            control[i] = false;
-                    }else if(!isFinalState(this.states.get(index_i.get(i))) && (!isFinalState(this.states.get(index_j.get(i))))) {
-                            if (motivo.get(i).equals("Final/Nao Final")){
-                                motivo.add(i,"");
-                            }
-                            control[i] = false;
-            }else if((isFinalState(this.states.get(index_i.get(i))) && !isFinalState(this.states.get(index_j.get(i)))) || (!isFinalState(this.states.get(index_i.get(i))) && isFinalState(this.states.get(index_j.get(i))))){
-              motivo.add(i,"Final/Nao Final");
-              control[i] = true;
-            }
+                if(isFinalState(this.states.get(index_i.get(i))) && (isFinalState(this.states.get(index_j.get(i))))) {
+                    if(motivo.get(i).equals("Final/Nao Final")) {
+                        motivo.add(i,"");
+                    }
+                    System.out.println("entrou aqui" + index_i.get(i) + " " + index_j.get(i));
+                    control[i] = false;
+                }else if(!isFinalState(this.states.get(index_i.get(i))) && (!isFinalState(this.states.get(index_j.get(i))))) {
+                    if(motivo.get(i).equals("Final/Nao Final")) {
+                        motivo.add(i,"");
+                    }
+                    control[i] = false;
+                }else if((isFinalState(this.states.get(index_i.get(i))) && !isFinalState(this.states.get(index_j.get(i)))) || (!isFinalState(this.states.get(index_i.get(i))) && isFinalState(this.states.get(index_j.get(i))))){
+                    motivo.add(i,"Final/Nao Final");
+                    control[i] = true;
+                }
             }
         }
-        // hora de propagarrrrrrrrrrrrr
-
-        for(int ka=trueCounter-1; ka > 0; ka--) {
+        
+        /**
+         * This loop runs the whole depedency set and 
+         */
+        for(int ka=trueCounter-1; ka >= 0; ka--) {
              // eh invalido
              
-                // if (control[ka] == true){
+                if(control[ka] == true){
                     System.out.println("ka");
                     String [] aux = dependencyPharser(s[ka]);
                     if(aux == null) {
-                        System.out.println("EPAAA TIOZAO");
+                        continue;
                     }else {
+                        //Aqui cai se existe o S para o index atual;
+                        
                         for (int i = 0; i < aux.length; i ++){
                             String x = aux[i]; // recebendo o token pos i, para separar e propagar
                             int count_i = Character.getNumericValue(x.charAt(0));
                             System.out.println(count_i + " lixo");
                         }
                     }
-                // }else{
-                    // break;
-                // }
                 
-                
-                
-            
-      }
+                }
+            }
 
-        // for(int i=0; i < trueCounter; i++) {
+               // for(int i=0; i < trueCounter; i++) {
             
         //         System.out.println("x " + index_i.get(i) + " y " + index_j.get(i) + " " +   motivo.get(i));
         // }
     }
 
+    /**
+     * This private method breaks the current dependency data in some tokens.
+     * It cleans the tokens generated by this method. It replaces undesirable
+     *  characters
+     *
+     * @param
+     * @return 
+     */
     private String[] dependencyPharser(String s) {
             System.out.println("Pharser String: "+s);
                 if(s == null) return null;
@@ -262,7 +271,19 @@ public class Automaton {
         return null;
     }
             
-
+    /**
+     * This method is responsible for the return the next state of a current
+     * state reads an alphabet letter. It receives an alphabet letter and the
+     * current state and after that, creates a transitions tokens array by
+     * transition pharser method.
+     * Then, it verifys if tokens array contains the current state. If yes,
+     * it also verify if the current token contains a alphabet letter. After
+     * this, it returns the state and alphabet letter.
+     * 
+     * @param currentState A string current state that will be compared.
+     * @param alphabetLetter A alphabet set that will be compared.
+     * @return String A state string returned when the current 
+     */
     private String returnNextState(String currentState, String alphabetLetter) {
         String[][] tokens = transitionPharser();
         for(int i=0; i < this.transitions.size(); i++) {
@@ -277,11 +298,17 @@ public class Automaton {
         return null;
     }
 
+    /**
+     * This method breaks the transition expression in tokens. This
+     * tokens are two states and a alphabet letter. There is one current
+     * state that reading a some alphabet element, goes to the next state.
+     * 
+     * @return String[][] A multidimensional array that contains the current transition tokens.
+     */
     private String[][] transitionPharser() {
         String[][] tokens = new String[this.transitions.size()][3];
         String[] aux_1 = new String[2];
         String[] aux_2 = new String[2];
-        
         for(int k = 0; k < this.transitions.size(); k ++){
             for(int i=0; i < this.transitions.size(); i++) {
                 aux_1 = this.transitions.get(i).split(",");
